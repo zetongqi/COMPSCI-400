@@ -1,0 +1,16 @@
+Testing priority queue class: NoPQ
+NoPQ FAIL: Unable to construct instance of NoPQ
+   0 TOTAL TESTS RUN
+Testing priority queue class: PQ01
+   3 PASSED
+   2 FAILED
+   5 TOTAL TESTS RUN
+Testing priority queue class: PQ02
+FAILED test00isEmpty: unexpectedly threw java.lang.NullPointerException
+   2 PASSED
+   3 FAILED
+   5 TOTAL TESTS RUN
+Testing priority queue class: PQ03
+   3 PASSED
+   2 FAILED
+   5 TOTAL TESTS RUN
