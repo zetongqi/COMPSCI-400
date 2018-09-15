@@ -103,6 +103,10 @@ public class TestPQ {
 			if (test03insertRemoveOne(className)) passCount++; else failCount++;
 			if (test04insertRemoveMany(className)) passCount++; else failCount++;
 			if (test05duplicatesAllowed(className)) passCount++; else failCount++;
+			if (test06manyDataItems(className)) passCount++; else failCount++;
+			if (test07correctTypes(className)) passCount++; else failCount++;
+			if (test08illegalArgument(className)) passCount++; else failCount++;
+
 
 			// TODO: add calls to your additional test methods here
 
@@ -133,6 +137,73 @@ public class TestPQ {
 	// Do not try to fix or debug implementations.
 	/////////////////////////
 
+	private static boolean test08illegalArgument(String className)
+	throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	{
+		
+	}
+
+	private static boolean test07correctTypes(String className)
+	throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	{
+		PriorityQueueADT<Integer> pqInt = newIntegerPQ(className);
+		PriorityQueueADT<Double> pqDouble = newDoublePQ(className);
+		PriorityQueueADT<String> pqString = newStringPQ(className);
+		try
+		{
+			pqInt.insert(5);
+			pqDouble.insert(12.35);
+			pqString.insert("this_is_a_string");
+			return true;
+		}
+		catch (Exception e)
+		{
+			if (DEBUG) e.printStackTrace();
+			print("FAILED test07correctTypes: unexpectedly threw " + e.getClass().getName());
+			return false;
+		}
+	}
+
+	private static boolean test06manyDataItems(String className) 
+		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		PriorityQueueADT<Integer> pq = newIntegerPQ(className);
+		PriorityQueue<Integer> reference = new PriorityQueue<Integer> (100, Collections.reverseOrder());
+		try
+		{
+			for (int i = 0; i < 10000; i++)
+			{
+				int rand = (int) (Math.random() * 100);
+				pq.insert(rand);
+				reference.add(rand);
+			}
+			for (int i = 0; i < 10000; i++)
+			{	
+				int trueMax = reference.poll();
+				int getMax_max = pq.getMax();
+				int max = pq.removeMax();
+				//print("removed max" + max + "  true max" + trueMax);
+				if (max != trueMax)
+				{
+					print("FAILED test06manyDataItems: removed value isn't true max value");
+					return false;
+				}
+				if (getMax_max != trueMax)
+				{
+					print("FAILED test06manyDataItems: getMax() didn't return true max value");
+					return false;
+				}
+			}
+			return true;
+		}
+		catch (Exception e)
+		{
+			if (DEBUG) e.printStackTrace();
+			print("FAILED test06manyDataItems: unexpectedly threw " + e.getClass().getName());
+			return false;
+		}
+
+		}
+
 	private static boolean test05duplicatesAllowed(String className) 
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		PriorityQueueADT<Integer> pq = newIntegerPQ(className);
@@ -143,7 +214,7 @@ public class TestPQ {
 			pq.insert(8);
 			int pop1 = pq.removeMax();
 			int pop2 = pq.removeMax();
-			print("pop1 " + pop1 + "    pop2 " + pop2);
+			//print("pop1 " + pop1 + "    pop2 " + pop2);
 			if (pop1 == 8 && pop2 == 5)
 			{
 				print("FAILED test05duplicatesAllowed: no duplicates are allowed");
@@ -172,18 +243,16 @@ public class TestPQ {
 	private static boolean test04insertRemoveMany(String className) 
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		PriorityQueueADT<Integer> pq = newIntegerPQ(className);
-		PriorityQueue<Integer> reference = new PriorityQueue<Integer> (100, Collections.reverseOrder());
+		PriorityQueue<Integer> reference = new PriorityQueue<Integer> (1000, Collections.reverseOrder());
 		try
 		{
 			for (int i = 0; i < 1000; i++)
 			{
 				int rand = (int) (Math.random() * 100);
-				//print("inserting" + rand);
 				pq.insert(rand);
 				reference.add(rand);
-
 			}
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 1000; i++)
 			{	
 				int trueMax = reference.poll();
 				int getMax_max = pq.getMax();
