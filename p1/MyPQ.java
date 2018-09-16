@@ -18,19 +18,48 @@
 
 import java.util.NoSuchElementException;
 
-/** TODO: add class header comments here
+/** MyPQ Implementation
  * @param <T>
  *
  */
+
+import java.util.*;
+
 public class MyPQ<T extends Comparable<T>> implements PriorityQueueADT<T> {
 
 	/* (non-Javadoc)
 	 * @see p1.PriorityQueueADT#isEmpty()
 	 */
+
+	private ArrayList<T> queue = new ArrayList<T>();
+
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return queue.isEmpty();
+	}
+
+	private void Sort()
+	{
+		if (this.queue.size() <= 1)
+		{
+			return;
+		}
+		else
+		{
+			T key;
+			int i;
+			for (int j=1; j<this.queue.size(); j++)
+			{
+				key = this.queue.get(j);
+				i = j-1;
+				while(i>-1 && this.queue.get(i).compareTo(key) > 0)
+				{
+					this.queue.set(i+1, this.queue.get(i));
+					i = i-1;
+				}
+				this.queue.set(i+1, key);
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -38,8 +67,8 @@ public class MyPQ<T extends Comparable<T>> implements PriorityQueueADT<T> {
 	 */
 	@Override
 	public void insert(T p) {
-		// TODO Auto-generated method stub
-		
+		this.queue.add(p);
+		this.Sort();
 	}
 
 	/* (non-Javadoc)
@@ -47,8 +76,14 @@ public class MyPQ<T extends Comparable<T>> implements PriorityQueueADT<T> {
 	 */
 	@Override
 	public T removeMax() throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.queue.size() == 0)
+		{
+			throw new NoSuchElementException();
+		}
+		else
+		{
+			return this.queue.remove(this.queue.size() - 1);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -56,8 +91,14 @@ public class MyPQ<T extends Comparable<T>> implements PriorityQueueADT<T> {
 	 */
 	@Override
 	public T getMax() throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.queue.size() == 0)
+		{
+			throw new NoSuchElementException();
+		}
+		else
+		{
+			return this.queue.get(this.queue.size() - 1);
+		}
 	}
 
 }

@@ -1,11 +1,11 @@
 /**
  * Filename:   TestPQ.java
  * Project:    p1TestPQ
- * Authors:    Debra Deppeler, TODO: add your name here
+ * Authors:    Debra Deppeler, Zetong Qi
  *
  * Semester:   Fall 2018
  * Course:     CS400
- * Lecture:    TODO replace with your lecture number
+ * Lecture:    001
  * 
  * Note: Warnings are suppressed on methods that construct new instances of 
  * generic PriorityQueue types.  The exceptions that occur are caught and 
@@ -104,8 +104,9 @@ public class TestPQ {
 			if (test04insertRemoveMany(className)) passCount++; else failCount++;
 			if (test05duplicatesAllowed(className)) passCount++; else failCount++;
 			if (test06manyDataItems(className)) passCount++; else failCount++;
-			if (test07correctTypes(className)) passCount++; else failCount++;
-			if (test08illegalArgument(className)) passCount++; else failCount++;
+			if (test07constructorTest(className)) passCount++; else failCount++;
+			if (test08removeMaxString(className)) passCount++; else failCount++;
+			if (test09insertRemoveManyString(className)) passCount++; else failCount++;
 
 
 			// TODO: add calls to your additional test methods here
@@ -137,13 +138,77 @@ public class TestPQ {
 	// Do not try to fix or debug implementations.
 	/////////////////////////
 
-	private static boolean test08illegalArgument(String className)
+	private static boolean test09insertRemoveManyString(String className)
 	throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
-		
+		PriorityQueueADT<String> pq = newStringPQ(className);
+		PriorityQueue<String> reference = new PriorityQueue<String> (1000, Collections.reverseOrder());
+		try
+		{
+			for (int i = 0; i < 1000; i++)
+			{
+				String rand = Integer.toString((int)(Math.random() * 100));
+				pq.insert(rand);
+				reference.add(rand);
+			}
+			for (int i = 0; i < 100; i++)
+			{	
+				String trueMax = reference.poll();
+				String getMax_max = pq.getMax();
+				String max = pq.removeMax();
+				//print("removed max" + max + "  true max" + trueMax);
+				if (! max.equals(trueMax))
+				{
+					print("FAILED test09insertRemoveManyString: removed value isn't true max value");
+					return false;
+				}
+				if (! getMax_max.equals(trueMax))
+				{
+					print("FAILED test09insertRemoveManyString: getMax() didn't return true max value");
+					return false;
+				}
+			}
+			return true;
+		}
+			
+			catch (Exception e)
+		{
+			if (DEBUG) e.printStackTrace();
+			print("FAILED test09insertRemoveManyString: unexpectedly threw " + e.getClass().getName());
+			return false;
+		}
 	}
 
-	private static boolean test07correctTypes(String className)
+	private static boolean test08removeMaxString(String className)
+	throws InstantiationException, IllegalAccessException, ClassNotFoundException
+	{
+		PriorityQueueADT<String> pqString = newStringPQ(className);
+		try
+		{
+			String s1 = "1";
+			String s2 = "2";
+			pqString.insert(s1);
+			pqString.insert(s2);
+			String removed = pqString.removeMax();
+			if (s1.compareTo(s2) < 0 && removed.compareTo(s2) == 0)
+			{
+				return true;
+			}
+			else
+			{
+				print("FAILED test08removeMaxString: removed value isn't string with maximum value");
+				return false;
+			}
+		}
+		catch (Exception e)
+		{
+			if (DEBUG) e.printStackTrace();
+			print("FAILED test08removeMaxString: unexpectedly threw " + e.getClass().getName());
+			return false;
+		}
+	}
+
+	private static boolean test07constructorTest(String className)
 	throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
 		PriorityQueueADT<Integer> pqInt = newIntegerPQ(className);
@@ -159,7 +224,7 @@ public class TestPQ {
 		catch (Exception e)
 		{
 			if (DEBUG) e.printStackTrace();
-			print("FAILED test07correctTypes: unexpectedly threw " + e.getClass().getName());
+			print("FAILED test07constructorTest: unexpectedly threw " + e.getClass().getName());
 			return false;
 		}
 	}
@@ -252,7 +317,7 @@ public class TestPQ {
 				pq.insert(rand);
 				reference.add(rand);
 			}
-			for (int i = 0; i < 1000; i++)
+			for (int i = 0; i < 100; i++)
 			{	
 				int trueMax = reference.poll();
 				int getMax_max = pq.getMax();
