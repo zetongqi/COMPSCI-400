@@ -4,7 +4,7 @@
  * Version:    1.0
  * User:       deppeler
  * Date:       Aug 29, 2018
- * Authors:    Debra Deppeler
+ * Authors:    Debra Deppeler, Zetong Qi
  *
  * Semester:   Fall 2018
  * Course:     CS400
@@ -16,21 +16,21 @@
  */
 
 
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /** MyPQ Implementation
+ *  MyPQ is an implementation of PriorityQueueADT
  * @param <T>
  *
  */
 
-import java.util.*;
 
-public class MyPQ<T extends Comparable<T>> implements PriorityQueueADT<T> {
+public class MyPQ<T extends Comparable<T>> implements PriorityQueueADT<T>
+{
 
 	/* (non-Javadoc)
 	 * @see p1.PriorityQueueADT#isEmpty()
 	 */
-
 	private ArrayList<T> queue = new ArrayList<T>();
 
 	@Override
@@ -38,6 +38,7 @@ public class MyPQ<T extends Comparable<T>> implements PriorityQueueADT<T> {
 		return queue.isEmpty();
 	}
 
+	/* an implementation of insertion sort to sort the queue in an increasing order*/
 	private void Sort()
 	{
 		if (this.queue.size() <= 1)

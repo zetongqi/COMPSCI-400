@@ -5,7 +5,7 @@
  *
  * Semester:   Fall 2018
  * Course:     CS400
- * Lecture:    001
+ * Lecture:    9:30am Tuesday/Thrusday Social Sciences
  * 
  * Note: Warnings are suppressed on methods that construct new instances of 
  * generic PriorityQueue types.  The exceptions that occur are caught and 
@@ -108,14 +108,6 @@ public class TestPQ {
 			if (test08removeMaxString(className)) passCount++; else failCount++;
 			if (test09insertRemoveManyString(className)) passCount++; else failCount++;
 
-
-			// TODO: add calls to your additional test methods here
-
-
-
-
-
-
 			String passMsg = String.format("%4d PASSED", passCount);
 			String failMsg = String.format("%4d FAILED", failCount);
 			print(passMsg);
@@ -131,13 +123,16 @@ public class TestPQ {
 
 	}
 
-	/////////////////////////
-	// TODO: ADD YOUR TEST METHODS HERE
-	// Must test each operation of the PriorityQueueADT
-	// Find and report cases that cause problems.
-	// Do not try to fix or debug implementations.
-	/////////////////////////
 
+	/** Confirm that the implementation of priority queue's can insert 1000 elements and
+	 * remove top 100 largest strings correctly without throwing any exceptions
+	 *
+	 * @param className name of the priority queue implementation to test.
+	 * @return true if insert removeMax function correctly and no exceptions thrown
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	private static boolean test09insertRemoveManyString(String className)
 	throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
@@ -179,6 +174,14 @@ public class TestPQ {
 		}
 	}
 
+	/** Confirm that the String version of priority queue's removeMax() can work correctly
+	 *
+	 * @param className name of the priority queue implementation to test.
+	 * @return true removeMax() removes max string from priority queue and no exceptions thrown
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	private static boolean test08removeMaxString(String className)
 	throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
@@ -208,6 +211,15 @@ public class TestPQ {
 		}
 	}
 
+	/** Confirm that the implementation of priority queue's constructor for Integer,
+	 * Double and String PriorityQueueADT as well as insert and remove works correctly
+	 *
+	 * @param className name of the priority queue implementation to test.
+	 * @return true if getMax on empty priority queue throws NoSuchElementException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	private static boolean test07constructorTest(String className)
 	throws InstantiationException, IllegalAccessException, ClassNotFoundException
 	{
@@ -219,7 +231,13 @@ public class TestPQ {
 			pqInt.insert(5);
 			pqDouble.insert(12.35);
 			pqString.insert("this_is_a_string");
-			return true;
+			int intRemoved = pqInt.removeMax();
+			double doubleRemoved = pqDouble.removeMax();
+			String stringRemoved = pqString.removeMax();
+			if (intRemoved == 5 && doubleRemoved == 12.35 && stringRemoved == "this_is_a_string")
+				return true;
+			else
+				return false;
 		}
 		catch (Exception e)
 		{
@@ -229,10 +247,21 @@ public class TestPQ {
 		}
 	}
 
+	/** Confirm that the implementation of priority queue can insert 10000 elements and
+	 * remove all of them with any exceptions thrown and the removeMax() and getMax() can
+	 * return max value in the queue
+	 *
+	 * @param className name of the priority queue implementation to test.
+	 * @return true if priority queue can correctly insert and remove a large amount of
+	 * 	       elements without error or exceptions
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	private static boolean test06manyDataItems(String className) 
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		PriorityQueueADT<Integer> pq = newIntegerPQ(className);
-		PriorityQueue<Integer> reference = new PriorityQueue<Integer> (100, Collections.reverseOrder());
+		PriorityQueue<Integer> reference = new PriorityQueue<Integer> (10000, Collections.reverseOrder());
 		try
 		{
 			for (int i = 0; i < 10000; i++)
@@ -269,6 +298,14 @@ public class TestPQ {
 
 		}
 
+	/** Confirm if duplicates are allowed in the priority queue implementation
+	 *
+	 * @param className name of the priority queue implementation to test.
+	 * @return true if duplicates are allowed
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	private static boolean test05duplicatesAllowed(String className) 
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		PriorityQueueADT<Integer> pq = newIntegerPQ(className);
@@ -301,9 +338,15 @@ public class TestPQ {
 		}
 
 
-	/** TODO: DEFINE AND COMMENT THIS TEST
-	 * @param className
-	 * @return
+	/** Confirm that the implementation of PriorityQueueADT can insert and 1000 can remove the
+	 * top 100 largest values in the priority queue. Fail if the value returned by removeMax() 
+	 * or getMax() is not the largest in the currect priority queue and have any exceptions.
+	 *
+	 * @param className name of the priority queue implementation to test.
+	 * @return true if the priority queue can insert and remove many elements correctly
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
 	private static boolean test04insertRemoveMany(String className) 
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -344,9 +387,15 @@ public class TestPQ {
 		}
 	}
 
-	/** TODO: DEFINE AND COMMENT THIS TEST
-	 * @param className
-	 * @return
+	/** Confirm that the implementation of the PriorityQueueADT can insert and remove
+	 * elements as excepted. Any exceptions indicates a fail.
+	 *
+	 * @param className name of the priority queue implementation to test.
+	 * @return true if the implementation can insert and remove a single element correctly
+	 * 		   can the inserted element and the removed element is the same element
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
 	private static boolean test03insertRemoveOne(String className) 
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -371,9 +420,14 @@ public class TestPQ {
 		}
 	}
 
-	/** TODO: DEFINE AND COMMENT THIS TEST
-	 * @param className
-	 * @return
+	/** Confirm that removeMax throws NoSuchElementException if called on
+	 * an empty priority queue. Any other exception indicates a fail.
+	 *
+	 * @param className name of the priority queue implementation to test.
+	 * @return true if getMax on empty priority queue throws NoSuchElementException
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 */
 	private static boolean test02removeMaxEXCEPTION(String className) 
 		throws InstantiationException, IllegalAccessException, ClassNotFoundException {

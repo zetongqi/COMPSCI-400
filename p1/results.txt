@@ -1,0 +1,26 @@
+Testing priority queue class: NoPQ
+NoPQ FAIL: Unable to construct instance of NoPQ
+   0 TOTAL TESTS RUN
+Testing priority queue class: PQ01
+  10 PASSED
+   0 FAILED
+  10 TOTAL TESTS RUN
+Testing priority queue class: PQ02
+FAILED test00isEmpty: unexpectedly threw java.lang.NullPointerException
+FAILED test04insertRemoveMany: unexpectedly threw java.lang.ArrayIndexOutOfBoundsException
+FAILED test06manyDataItems: unexpectedly threw java.lang.ArrayIndexOutOfBoundsException
+FAILED test09insertRemoveManyString: unexpectedly threw java.lang.ArrayIndexOutOfBoundsException
+   6 PASSED
+   4 FAILED
+  10 TOTAL TESTS RUN
+Testing priority queue class: PQ03
+FAILED test04insertRemoveMany: removed value isn't true max value
+FAILED test06manyDataItems: removed value isn't true max value
+FAILED test09insertRemoveManyString: removed value isn't true max value
+   7 PASSED
+   3 FAILED
+  10 TOTAL TESTS RUN
+Testing priority queue class: MyPQ
+  10 PASSED
+   0 FAILED
+  10 TOTAL TESTS RUN
