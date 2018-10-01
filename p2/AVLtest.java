@@ -21,6 +21,6 @@ public class AVLtest
 		//t.delete(1);
 		//t.Print();
 		//t.printRoot();
-		System.out.println(t.checkForBinarySearchTree());
+		System.out.println(t.checkForBalancedTree());
 	}
 }

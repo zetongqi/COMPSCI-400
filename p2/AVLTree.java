@@ -5,7 +5,7 @@
  *
  * Semester:   Fall 2018
  * Course:     CS400
- * Lecture:    TODO: replace with your lecture number
+ * Lecture:    001
  * 
  * Due Date:   Before 10pm on September 24, 2018
  * Version:    1.0
@@ -19,12 +19,12 @@ import java.lang.IllegalArgumentException;
 import java.util.*;
 import java.lang.*;
 
-/** TODO: add class header comments here
+/** AVLTree class implementation
  * @param <K>
  */
 public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 
-	/** TODO: add class header comments here
+	/** BSTNode class implementation
 	 * Represents a tree node.
 	 * @param <K>
 	 */
@@ -104,20 +104,25 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		}
 	}
 	
+	/*a root node for AVLTree class*/
 	private BSTNode<K> root;
 
+	/*AVLTree constructor*/
 	AVLTree()
 	{
 		this.root = null;
 	}
 
+	/*a helper method for debugging*/
 	public void printRoot()
 		{
 			System.out.println(this.root.getKey());
 		}
 
 	/**
-	 * TODO: add method header comments here
+	 * check if a AVLTree is empty
+	 * @param none
+	 * @return true if the AVLTree is empty 
 	 */
 	@Override
 	public boolean isEmpty() {
@@ -128,7 +133,9 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 	}
 
 	/**
-	 * TODO: add method header comments here
+	 * right rotate a node
+	 * @param BSTNode<K> node
+	 * @return BSTNode<K> node
 	 */
 
 	public BSTNode<K> rightRotate(BSTNode<K> node)
@@ -144,6 +151,11 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		return node;
 	}
 
+	/**
+	 * left rotate a node
+	 * @param BSTNode<K> node
+	 * @return BSTNode<K> node
+	 */
 	public BSTNode<K> leftRotate(BSTNode<K> node)
 	{
 		BSTNode<K> tempT1 = node.getLeft();
@@ -157,6 +169,11 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		return node;
 	}
 
+	/**
+	 * helper method of public method getHeight() to get the height of a given node
+	 * @param BSTNode<K>, int, int
+	 * @return int
+	 */
 	private int getHeight(BSTNode<K> node, int leftHeight, int rightHeight)
 	{
 		if (node == null)
@@ -176,11 +193,21 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		}
 	}
 
+	/**
+	 * get the height of the tree
+	 * @param none
+	 * @return the height of the tree
+	 */
 	public int getHeight()
 	{
 		return getHeight(this.root, 0, 0);
 	}
 
+	/**
+	 * from a given BSTNode<K>, travel up to find the first unbalanced node
+	 * @param BSTNode<K>
+	 * @return the first unbalanced BSTNode<K> node
+	 */
 	public BSTNode<K> find_Unbalanced_Node(BSTNode<K> node)
 	{
 		BSTNode<K> pointer = node;
@@ -195,6 +222,11 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		return null;
 	}
 
+	/**
+	 * find the path between two nodes
+	 * @param node at the top, node at the bottom
+	 * @return ArrayList of all the nodes in between
+	 */
 	//find a path between node from bottom to top
 	public ArrayList<BSTNode<K>> findPath(BSTNode<K> top, BSTNode<K> down)
 	{
@@ -209,6 +241,11 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		return nodeList;
 	}
 
+	/**
+	 * find the relationship between two nodes
+	 * @param parent node, child node
+	 * @return 1: right child; 2: left child; 0: no relationship
+	 */
 	public int findRelation(BSTNode<K> parent, BSTNode<K> child)
 	{
 		if (parent.getRight() != null)	
@@ -220,6 +257,11 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		return 0;
 	}
 
+	/**
+	 * insert a BSTNode<K> n into the subtree with BSTNode<K> node as the root
+	 * @param BSTNode<K> node, BSTNode<K> n
+	 * @return the root node of the subtree after the insertion
+	 */
 	private BSTNode insert(BSTNode<K> node, BSTNode<K> n) throws DuplicateKeyException, IllegalArgumentException
 	{
 		if (node == null)
@@ -245,6 +287,11 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 	}
 
 	//AVL insert
+	/**
+	 * insert a BSTNode<K> n into the subtree with BSTNode<K> node as the root while keeping it balanced
+	 * @param BSTNode<K> node, BSTNode<K> n
+	 * @return the root node of the subtree after the insertion
+	 */
 	@Override
 	public void insert(K key) throws DuplicateKeyException, IllegalArgumentException {
 		BSTNode<K> n = new BSTNode<K>(key);
@@ -283,9 +330,10 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 	}
 
 	/**
-	 * TODO: add method header comments here
-	 */
-
+	 * get the smallest node in a subtree
+	 * @param root node of the subtree
+	 * @return the smallest node in the subtree
+	 */	
 	private BSTNode<K> getSmallestNode(BSTNode<K> node)
 	{
 		if (node.getLeft() == null)
@@ -295,13 +343,18 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 	}
 
 	//get the balance factor of a node
-	int getBalance(BSTNode<K> node)  
+	private int getBalance(BSTNode<K> node)  
     {  
         if (node == null)  
             return 0;  
         return this.getHeight(node.left,0, 0) - this.getHeight(node.right,0, 0);  
     } 
-
+	/**
+	 * private helper method for the public method delete()
+	 * delete an node from the subtree while keeping it balanced
+	 * @param root node of the subtree, the key to be deleted
+	 * @return the root node of the subtree after the insertion
+	 */
     private BSTNode<K> delete(BSTNode<K> node, K key) throws IllegalArgumentException
     {
     	//System.out.println("here");
@@ -363,6 +416,11 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
     	return node;
     }
 
+    /**
+     * public delete method while keeping the tree balanced
+     * @param the key to be deleted
+	 * @return the root node of the subtree after the insertion
+     */
 	@Override
 	public void delete(K key) throws IllegalArgumentException
 	{
@@ -370,9 +428,11 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 	}
 
 	/**
-	 * TODO: add method header comments here
+	 * private helper method of the public search()
+	 * check if a key is in the AVLTree
+	 * @param root node of the subtree to begin the search, key to search
+	 * @return true if the key is in the subtree
 	 */
-
 	private boolean search(BSTNode<K> node, K key) throws IllegalArgumentException
 	{
 		if (node == null)
@@ -385,13 +445,21 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 			return search(node.getRight(), key);
 	}
 
+	/**
+	 * check if a key is in the AVLTree
+	 * @param key to search
+	 * @return true if the key is in the subtree
+	 */
 	@Override
 	public boolean search(K key) throws IllegalArgumentException {
 		return this.search(this.root, key);
 	}
-
+	
 	/**
-	 * TODO: add method header comments here
+	 * private helper method of the publuc search()
+	 * print the tree in-order to a string
+	 * @param root node for a subtree, String
+	 * @return String of elements
 	 */
 	private String print(BSTNode<K> node, String s)
 	{
@@ -405,15 +473,17 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		return s;
 	}
 
+	/**
+	 * print the tree in-order to a string
+	 * @param none
+	 * @return String of elements
+	 */
 	@Override
 	public String print() {
 		return this.print(this.root, "");
 	}
 
-	/**
-	 * TODO: add method header comments here
-	 */
-
+	//a method to calculate the height of a subtree
 	private int height(BSTNode<K> node)  
     { 
         if (node == null) 
@@ -421,6 +491,12 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
         return 1 + Math.max(height(node.getLeft()), height(node.getRight())); 
     } 
 
+    /**
+     * private helper function of public checkForBalancedTree()
+	 * check if a tree is balanced
+	 * @param node
+	 * @return true if the subtree is balanced
+	 */
     private boolean checkForBalancedTree(BSTNode<K> node)  
     { 
         int lh;
@@ -434,15 +510,17 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
         return false;
     }        
 
+    /**
+	 * check if a tree is balanced
+	 * @param none
+	 * @return true if the tree is balanced
+	 */
 	@Override
 	public boolean checkForBalancedTree() {
 		return this.checkForBalancedTree(this.root);
 	}
 
-	/**
-	 * TODO: add method header comments here
-	 */
-
+	//put all the elements in the tree into an ArrayList<K>
 	private void traverse(BSTNode<K> node, ArrayList<K> elements)
 	{
 		if (node == null)
@@ -461,11 +539,17 @@ public class AVLTree<K extends Comparable<K>> implements AVLTreeADT<K> {
 		return elements;
 	}
 
+	/**
+	 * check if a tree is a binary search tree
+	 * @param none
+	 * @return true is the tree is a binary seach tree
+	 */
 	@Override
 	public boolean checkForBinarySearchTree() {
+		ArrayList<K> elements = this.traverse();
 		for (int i = 1; i < elements.size(); i++)
 		{
-			System.out.println(elements.get(i-1)+"   "+elements.get(i));
+			//System.out.println(elements.get(i-1)+"   "+elements.get(i));
 			if (elements.get(i-1).compareTo(elements.get(i)) > 0)
 			{
 				System.out.println(elements.get(i));
