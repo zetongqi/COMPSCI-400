@@ -215,16 +215,24 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 		{
 			throw new IllegalArgumentException();
 		}
-		int hash_index = this.hash_function(key);
-		for (int i = 0; i < this.hash_table.get(hash_index).size(); i++)
+		try
 		{
-			if (this.hash_table.get(hash_index).get(i).getKey().equals(key))
+			int hash_index = this.hash_function(key);
+			for (int i = 0; i < this.hash_table.get(hash_index).size(); i++)
 			{
-				this.hash_table.get(hash_index).remove(i);
-				return;
+				if (this.hash_table.get(hash_index).get(i).getKey().equals(key))
+				{
+					this.hash_table.get(hash_index).remove(i);
+					return;
+				}
 			}
+			throw new NoSuchElementException();
 		}
-		throw new NoSuchElementException();
+		catch (Exception e)
+		{
+			System.out.println("Exception thrown at key: " + key + "   when deleting    " + e.getClass().getName());
+			return;
+		}
 	}
 	
 	/**

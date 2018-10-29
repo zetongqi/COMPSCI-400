@@ -10,7 +10,8 @@ public class test
 			hs.put(i, i+1);
 			System.out.println(hs.get(i));
 		}
-		System.out.println();
+		System.out.println(hs.size());
+		hs.remove(99);
 		//hs.get_info();
 		System.out.println(hs.size());
 	}
