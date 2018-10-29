@@ -6,7 +6,7 @@
  * Semester:   Fall 2018
  * Course:     CS400
  * 
- * Due Date:   TODO: add assignment due date and time
+ * Due Date:   OCT 29 10PM
  * Version:    1.0
  * 
  * Credits:    
@@ -34,16 +34,21 @@ import java.util.*;
 //       
 public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V> {
 	
+	//HashNode object that stores the key value pair
 	private class HashNode<K extends Comparable<K>, V>
 	{
+		//HashNode memebers
 		private K key;
 		private V value;
+
+		//constructor
 		public HashNode(K key, V value)
 		{
 			this.key = key;
 			this.value = value;
 		}
 
+		//accessors
 		public K getKey()
 		{
 			return this.key;
@@ -54,30 +59,32 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 			return this.value;
 		}
 
+		//mutators
 		public void setKey(K key)
 		{
 			this.key = key;
 		}
 
-		public void setKey(V value)
+		public void setValue(V value)
 		{
 			this.value = value;
 		}
 	}
 
+	//HashTable mambers
 	private ArrayList<LinkedList<HashNode<K, V>>> hash_table;
 	private double loadFactor;
 	private int tableSize;
 		
 	/**
 	 * Constructor
-	 * default tableSize = 10, loadFactor = 0.5
+	 * default tableSize = 123, loadFactor = 0.7
 	 */
 	public HashTable() {
-		this.tableSize = 10;
-		this.loadFactor = 0.5;
+		this.tableSize = 123;
+		this.loadFactor = 0.7;
 		this.hash_table = new ArrayList<LinkedList<HashNode<K, V>>> (this.tableSize);
-		for (int i = 0; i < 11; i++)
+		for (int i = 0; i < this.tableSize; i++)
 		{
 			this.hash_table.add(new LinkedList<HashNode<K, V>> ());
 		}
@@ -119,7 +126,8 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 	/**
 	 * put (key, value) pair in the HashTable
 	 * store (key, value) pair in the HashNode
-	 * @param K key, V value
+	 * throw IllegalArgumentException when key is null
+	 * @param K key, V value pair
 	 */
 	@Override
 	public void put(K key, V value) throws IllegalArgumentException {
@@ -129,19 +137,15 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 		}
 		try
 		{
-			//System.out.println(this.loadFactor);
-			//if rehashing is needed
+			//if rehashing is needed, double this.hash_table and rehash every element
 			if ((Double.valueOf(this.totalSize()) / Double.valueOf(this.tableSize)) > this.loadFactor)
 			{
-				//System.out.println("value inside: " + value);
-				//System.out.println("here");
 				this.tableSize = this.tableSize*2;
 				ArrayList<LinkedList<HashNode<K, V>>> new_hash_table = new ArrayList<LinkedList<HashNode<K, V>>> (this.tableSize);
 				for (int i = 0; i < this.tableSize; i++)
 				{
 					new_hash_table.add(new LinkedList<HashNode<K, V>> ());
 				}
-				//System.out.println(this.hash_table.size());
 
 				for (int i = 0; i < this.hash_table.size(); i++)
 				{
@@ -149,41 +153,46 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 					{
 						//rehashing each element
 						new_hash_table.get(this.hash_function(this.hash_table.get(i).get(j).getKey())).add(this.hash_table.get(i).get(j));
-						//problem here
 					}	
 				}
 				this.hash_table = new_hash_table;
-				HashNode<K, V> node = new HashNode<K, V>(key, value);
-				this.hash_table.get(this.hash_function(key)).add(node);
-			}	
-			else
-			{	
-				//System.out.println("value inside: " + value);
-				//System.out.println(this.hash_function(key));
-				//System.out.println(this.hash_table.size());
-				HashNode<K, V> node = new HashNode<K, V>(key, value);
-				this.hash_table.get(this.hash_function(key)).add(node);
 			}
+
+			//insert the key value pair in the HashTable
+			int hashIndex = this.hash_function(key);
+			for (int i = 0; i < this.hash_table.get(hashIndex).size(); i++)
+			{
+				//if the key already exists in the HashTable
+				if (this.hash_table.get(hashIndex).get(i).getKey().equals(key))
+				{
+					//update the value in that HashNode
+					this.hash_table.get(hashIndex).get(i).setValue(value);
+					return;
+				}
+			}
+			//if the key is not in the HashTable, add a new HashNode
+			HashNode<K, V> node = new HashNode<K, V>(key, value);
+			this.hash_table.get(hashIndex).add(node);
+			return;
 		}
 		catch (Exception e)
 		{
-			//System.out.println(this.hash_function(key) +"  "+this.hash_table.size());
-			System.out.println("Exception thrown at key: " + key + "   when inserting    " + e.getClass().getName());
+			System.out.println("Exception: " + e.getClass().getName() + " thrown at key: " + key + " when putting ");
 			return;
 		}
 	}
 	
 	/**
 	 * return the V value with the K key
-	 * @param K key
-	 * @return V value
+	 * throw IllegalArgumentException if key is null 
+	 * throw NoSuchElementException if key does not exist 
+	 * @param K key value
+	 * @return V value corresponding to the K key
 	 */
 	@Override
 	public V get(K key) throws IllegalArgumentException, NoSuchElementException {
 		if (key == null)
-			{
-				throw new IllegalArgumentException();
-			}
+			throw new IllegalArgumentException();
 		try
 		{
 			int index = this.hash_function(key);
@@ -196,19 +205,17 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception thrown at key: " + key + "   when getting    " + e.getClass().getName());
+			System.out.println("Exception: " + e.getClass().getName() + " thrown at key: " + key + " when geting ");
 			return null;
 		}
 	}
 
-	/*public void get_info()
-	{
-		System.out.println(this.totalSize());
-		System.out.println(this.hash_table.size());
-		System.out.println(Double.valueOf(this.totalSize()) / Double.valueOf(this.tableSize));
-	}*/
-
-	// TODO: comment and complete this method
+	/**
+	 * remove the (key,value) entry for the specified key
+	 * throw IllegalArgumentException if key is null
+	 * throw NoSuchElementException if key does not exist in the tree
+	 * @param K key value
+	 */
 	@Override
 	public void remove(K key) throws IllegalArgumentException, NoSuchElementException {
 		if (key == null)
@@ -230,13 +237,14 @@ public class HashTable<K extends Comparable<K>, V> implements HashTableADT<K, V>
 		}
 		catch (Exception e)
 		{
-			System.out.println("Exception thrown at key: " + key + "   when deleting    " + e.getClass().getName());
+			System.out.println("Exception: " + e.getClass().getName() + " thrown at key: " + key + " when deleting ");
 			return;
 		}
 	}
 	
 	/**
 	 * return the number of elements in the HashTable
+	 * @return the integer number of elements in the HashTable
 	 */
 	@Override
 	public int size() {
