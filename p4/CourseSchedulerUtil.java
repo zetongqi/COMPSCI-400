@@ -160,8 +160,18 @@ public class CourseSchedulerUtil<T> {
      */
     public boolean canCoursesBeCompleted() throws Exception
     {
+        Boolean result = true;
+        GraphImpl<T> g = this.graphImpl;
+        int num = g.order();
+        ArrayList<T> list = new ArrayList<T>();
+        Map<T, Boolean> visited = new HashMap<T, Boolean>();
+        //mark all as unvisited
+        for (int i = 0; i < num; i++)
+        {
+            visited.put(g.getVertices().get(i), false);
+        }
+        return g.DFS(g.getVertices().get(0), visited, list, result);
         
-        return false;
 
     }
     
@@ -246,8 +256,7 @@ public class CourseSchedulerUtil<T> {
         }
         //System.out.println("haha"+ordered);
         return ordered;
-    }
-        
+    }     
 
         
     /**
@@ -256,8 +265,17 @@ public class CourseSchedulerUtil<T> {
      * @return the number of minimum courses needed for a given course
      */
     public int getMinimalCourseCompletion(T courseName) throws Exception {
-        //TODO: implement this method
-        return -1;
+        GraphImpl<T> g = this.graphImpl;
+        int num = g.order();
+        ArrayList<T> list = new ArrayList<T>();
+        Map<T, Boolean> visited = new HashMap<T, Boolean>();
+        //mark all as unvisited
+        for (int i = 0; i < num; i++)
+        {
+            visited.put(g.getVertices().get(i), false);
+        }
+        g.traversalUtil(courseName, visited, list);
+        return list.size()-1;
         
     }
     

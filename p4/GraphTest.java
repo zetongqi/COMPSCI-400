@@ -9,7 +9,7 @@ class GraphTest
 		{
 			cs.constructGraph(cs.createEntity("valid.json"));
 			//cs.graphImpl.printGraph();
-			System.out.println(cs.getSubjectOrder());
+			System.out.println(cs.getMinimalCourseCompletion("CS760"));
 
 		}
 		catch (Exception e)

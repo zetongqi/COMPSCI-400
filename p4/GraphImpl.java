@@ -143,6 +143,39 @@ public class GraphImpl<T> implements GraphADT<T> {
         return this.verticesMap;
     }
 
+    public Boolean DFS(T v, Map<T, Boolean> visited, ArrayList<T> list, Boolean result)
+    {
+        list.add(v);
+        //mark node as visited
+        visited.replace(v, true);
+        ArrayList<T> l = (ArrayList<T>)this.getMap().get(v);
+        for (int i = 0; i < l.size(); i++)
+        {
+            if (visited.get(l.get(i)))
+            {
+                result = false;
+            }
+            if (!visited.get(l.get(i)))
+                return this.DFS(l.get(i), visited, list, result);
+        }
+        return result;
+    }
+
+    public void traversalUtil(T v, Map<T, Boolean> visited, ArrayList<T> list)
+    {
+        list.add(v);
+        //mark as visited
+        visited.replace(v, true);
+        ArrayList<T> pres = (ArrayList<T>) this.getMap().get(v);
+        for (int i = 0; i < pres.size(); i++)
+        {
+            if (visited.get(pres.get(i)))
+                continue;
+            else
+                traversalUtil(pres.get(i), visited, list);
+        }
+    }
+
 
     /**
      * Prints the graph for the reference
