@@ -1,0 +1,3 @@
+clear
+javac Entity.java GraphADT.java GraphImpl.java GraphTest.java CourseSchedulerUtil.java -cp /Users/zetong/CS/CS400/p4/p4/json-simple-1.1.1.jar 
+java -cp .:/Users/zetong/CS/CS400/p4/p4/json-simple-1.1.1.jar GraphTest
