@@ -1,0 +1,4 @@
+clear
+clear
+javac FoodItem.java test_food_item.java FoodData.java FoodDataADT.java BPTree.java BPTreeADT.java
+java test_food_item
